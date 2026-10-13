@@ -7,18 +7,11 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-// CORS origins are hardcoded (no env var). Add your Netlify URL here after deploying.
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'https://hackathon-boarding.netlify.app/',
-];
+// CORS is open to any origin (hardcoded, no env var). Auth uses a Bearer token in the
+// Authorization header, not cookies, so this does not expose user sessions.
 app.use(
   cors({
-    origin(origin, cb) {
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-      cb(new Error('Not allowed by CORS'));
-    },
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
